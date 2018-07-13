@@ -24,7 +24,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+
+data = {
+    :account => {
+        :email => 'foo@bar.com',
+        :password => 'somethingSecret'
+    }
+}
+
+sanitized = data.sanitize(:password)
+
+sanitized[:account][:password]
+#=> **********cret
+```
 
 ## Development
 
