@@ -17,19 +17,19 @@ end
 
 class Hash
 
-  def self.sanitize(source = {}, mask = [:password])
+  def self.sanitize(source = {}, mask = [:password], trailing_characters_to_reveal = 4)
     source.each do |key, value|
       if source[key].is_a?(Hash)
-        Hash.sanitize(source[key], mask)
+        Hash.sanitize(source[key], mask, trailing_characters_to_reveal)
       elsif mask.include?(key)
-        source[key] = "#{source[key]}".mask
+        source[key] = "#{source[key]}".mask(trailing_characters_to_reveal)
       end
     end
     source
   end
 
-  def sanitize(mask = [:password])
-    Hash.sanitize(self, mask)
+  def sanitize(mask = [:password], trailing_characters_to_reveal = 4)
+    Hash.sanitize(self, mask, trailing_characters_to_reveal)
   end
 
 end

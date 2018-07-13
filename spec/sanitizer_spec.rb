@@ -43,5 +43,27 @@ RSpec.describe Sanitizer do
     expect(test_remove_one[:nested][:Password]).to eq("intact")
     expect(test_remove_one[:nested][:deep][:deep]["password"]).to eq("**dden")
   end
+  
 
+  it 'masks value of any key passed in the mask argument and uses passed mask length' do
+    
+    example = {
+      :password => "secretPassword",
+      :nested => {
+        :password => "someSecret",
+        :Password => "intact",
+        :deep => {
+          :deep => {
+            :password => "hidden"
+          }
+        }
+      }
+    }
+
+    test_remove_one = example.sanitize([:password], 2)
+    expect(test_remove_one[:password]).to eq("************rd")
+    expect(test_remove_one[:nested][:password]).to eq("********et")
+    expect(test_remove_one[:nested][:Password]).to eq("intact")
+    expect(test_remove_one[:nested][:deep][:deep][:password]).to eq("****en")
+  end
 end
